@@ -1,4 +1,5 @@
 ﻿using Four.Constants.Enums;
+using System.Text;
 
 namespace Four.Objects.Deck;
 
@@ -65,6 +66,19 @@ public class Hand {
     }
 
 
+    public override string ToString() {
+        var stringBuilder = new StringBuilder();
+        foreach (var color in _colors) {
+            stringBuilder.Append(Card.ColorToChar[color] + " ");
+            foreach (var card in this[color].OrderByDescending(e => e.Value)) {
+                stringBuilder.Append(Card.ValueToString[card.Value] + " ");
+            }
+            stringBuilder.AppendLine();
+        }
+        return stringBuilder.ToString();
+    }
+
+
     #region static
     private static readonly CardColor[] _colors = [CardColor.Spade, CardColor.Heart, CardColor.Diamond, CardColor.Club];
 
@@ -89,13 +103,16 @@ public class Hand {
             case SuitState.Void:
                 return CalculateMiltonPointsForState(state);
             case SuitState.Single:
-                return CalculateMiltonPointsForState(state) + cards
-                    .Where(e => e.Value != CardValue.King && e.Value != CardValue.Queen && e.Value != CardValue.Jack)
-                    .CalculateMiltonPoints();
+                var card = cards.First();
+                if (card.Value == CardValue.King || card.Value == CardValue.Queen || card.Value == CardValue.Jack) {
+                    return card.MiltonPoints;
+                }
+                return CalculateMiltonPointsForState(state) + cards.CalculateMiltonPoints();
             case SuitState.Double:
-                return CalculateMiltonPointsForState(state) + cards
-                    .Where(e => e.Value != CardValue.Queen && e.Value != CardValue.Jack)
-                    .CalculateMiltonPoints();
+                if (cards.ContainsValue(CardValue.Queen) || cards.ContainsValue(CardValue.Jack)) {
+                    return cards.CalculateMiltonPoints();
+                }
+                return CalculateMiltonPointsForState(state) + cards.CalculateMiltonPoints();
             case SuitState.Many:
                 return cards.CalculateMiltonPoints();
             default:
