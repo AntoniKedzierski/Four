@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Presentation\Models\Deck\" />
     <Folder Include="Presentation\Models\Players\" />
   </ItemGroup>
 
