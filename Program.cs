@@ -1,3 +1,4 @@
+using Four.Constants.Enums;
 using Four.Presentation.Components;
 using Four.Tests;
 
@@ -30,14 +31,7 @@ internal class Program {
             .AddInteractiveServerRenderMode();
 
         Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-        for (int i = 0; i < 10; ++i) {
-            Console.WriteLine("========================");
-            Console.WriteLine($"Game {i + 1}:");
-            var game = DealGenerator.CreateGame();
-            Console.Write(game.ToString());
-            Console.WriteLine("========================");
-        }
+        var game = DealGenerator.CreateGame();
 
         app.Run();
     }

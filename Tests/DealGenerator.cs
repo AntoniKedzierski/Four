@@ -22,7 +22,7 @@ public static class DealGenerator {
             deck[j] = temp;
         }
 
-        var game = new Game();
+        var game = new Game((PlayerSide)(rng.Next() % 4));
         PlayerSide[] sides = [PlayerSide.North, PlayerSide.East, PlayerSide.South, PlayerSide.West];
 
         for (int i = 0; i < sides.Length; i++) {

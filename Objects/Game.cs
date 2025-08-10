@@ -1,4 +1,5 @@
 ﻿using Four.Constants.Enums;
+using Four.Objects.Bidding;
 using Four.Objects.Deck;
 using System.Text;
 
@@ -8,7 +9,12 @@ public class Game {
 
     public Dictionary<PlayerSide, Hand?> Players { get; private set; }
 
-    public Game() {
+    public Bidding.Bidding Bidding { get; private set; }
+
+    public Game() : this(PlayerSide.North) { }
+
+    public Game(PlayerSide openingSide) {
+        Bidding = new Bidding.Bidding(openingSide);
         Players = new Dictionary<PlayerSide, Hand?>() {
             { PlayerSide.North, null },
             { PlayerSide.East, null },
@@ -17,9 +23,23 @@ public class Game {
         };
     }
 
+
     public void AssignHand(PlayerSide side, Card[] cards) {
         Players[side] = new Hand(cards);
     }
+
+
+    /// <summary>
+    /// Dodaje odzywkę do licytacji.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns>False - licytacja się zakończyła, True - ciągle trwa.</returns>
+    public bool NextBid(string input) {
+        return Bidding.Bid(Bid.Read(input));
+    }
+
+
+    public PlayerSide ActivePlayer => Bidding.ActivePlayer;
 
 
     public override string ToString() {
@@ -29,8 +49,6 @@ public class Game {
                 continue;
             }
             stringBuilder.AppendLine(player.Key.ToString());
-            stringBuilder.AppendLine($"NT PC: { player.Value.MiltonPointsNoTrump }");
-            stringBuilder.AppendLine($"PC: { player.Value.MiltonPointsColor }");
             stringBuilder.AppendLine(player.Value.ToString());
         }
         return stringBuilder.ToString();

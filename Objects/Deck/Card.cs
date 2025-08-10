@@ -52,11 +52,12 @@ public class Card {
     };
 
 
-    public static readonly Dictionary<CardColor, char> ColorToChar = new Dictionary<CardColor, char>() {
-        { CardColor.Spade, '♠' },
-        { CardColor.Heart, '♥' },
-        { CardColor.Diamond, '♦' },
-        { CardColor.Club, '♣' },
+    public static readonly Dictionary<CardColor, string> ColorToChar = new Dictionary<CardColor, string>() {
+        { CardColor.Spade, "♠" },
+        { CardColor.Heart, "♥" },
+        { CardColor.Diamond, "♦" },
+        { CardColor.Club, "♣" },
+        { CardColor.NoTrump, "NT" },
     };
 
 
